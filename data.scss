@@ -1,0 +1,22 @@
+//  데이터 종류에 관한 강의 내용
+$number : 1;  // 0.5, 100px, 1em
+$string: bold;  // relative, "../images/a.png"
+$color : red; // blue, #ffff00, rgba(0,0,0,0.5)
+$boolean: true;
+$null : null;
+$list: orange, royalblue, yellow;
+$map: (
+  o: orange,
+  r: royalblue,
+  y: yellow
+);
+@each $c in $list {
+  .box{
+    color: $c;
+  }
+}
+@each $key, $value in $map {
+  .box-#{$key}{
+    color: $value;
+  }
+}

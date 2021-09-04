@@ -1,0 +1,184 @@
+// https://www.sassmeister.com/ 로 한눈에 비교 가능
+
+// @import url("./sub.scss");
+// @import "./sub.scss";
+// @import "./sub";
+@import "./sub", "./sub2.scss";
+
+$color: royalblue;
+
+.container{
+  h1 {
+    color: $color;
+    background-color: orange;
+    font-size: 60px;
+    // font-size: 20px;   // css로 변환될 경우 나타나지 않음
+    /*color: #000;*/    // css로 변환할 경우 나타남
+  }
+  ul{
+    li{
+      font-size: 40px;
+      .name{
+        color: $color;
+      }
+      .age{
+        color: orange;
+      }
+    }
+  }
+}
+
+
+아래 내용들 주석 해제하면서 다시 확인하기
+// & - 상위 선택자 참조
+
+.btn{
+  position: absolute;
+  &.active{
+    color: red;
+  }
+}
+
+.list{
+  li{
+  &:last-child{
+    margin-right: 0;
+    }
+  }
+}
+
+.fs{
+  &-small{font-size: 12px;}
+  &-medium{font-size: 14px;}
+  &-large{font-size: 16px;}
+}
+
+// 중첩된 속성
+.box{
+  //네임스페이스가 동일한 경우
+  //네임스페이스 : 이름을 통해 구분 가능한 범위를 만들어내는 것, 일종의 유효범위 지정하는 방법
+  font: {
+    weight: bold;
+    size: 10px;
+    family: sans-serif;
+  };
+  margin: {
+    top: 10px;
+    left: 20px;
+  };
+  padding: {
+    top: 20px;
+    bottom: 30px;
+    left: 40px;
+    right: 50px;
+  };
+}
+
+// 변수(Variables)
+$size1: 100px; // 전역변수
+
+.container{
+  $size2: 200px; // 지역변수
+  position: fixed;
+  top: $size1;
+  .item{
+    $size2: 100px;
+    width: $size2;
+    height: $size1;
+    transform: translateX($size2);
+  }
+}
+
+// 산술연산
+div{
+  width: 20px + 20px;
+  width: calc(100% - 200px);  // %와 px은 계산불가 
+  height: 40px - 10px;
+  font-size: 10px * 2;
+  padding: 20px % 7;
+  margin: 30px / 2; // 단축속성을 사용할때 / 를 사용하여 구분하기 때문
+  margin: (30px / 2);
+  $size:30px;
+  margin: $size / 2;
+  margin: 10px + 12px / 2;
+}
+
+// 재활용
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container{
+  @include center;
+  .item{
+    @include center;
+  }
+}
+.box{
+  @include center;
+}
+
+@mixin box($size:100px, $color: tomato) { // 100px은 기본값
+  width: $size;
+  height: $size;
+  background-color: $color;
+}
+.container{
+  @include box(200px, red);
+  .item{
+    @include box($color:green);
+  }
+}
+.box{
+  @include box;
+}
+
+// 반복문
+
+@for $i from 1 through 10 {
+  .box:nth-child(#{$i}){
+      width: 100px;
+  }
+}
+
+// 함수
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@function ratio($size, $ratio){
+  @return $size * $ratio
+};
+
+.box{
+  $width : 100px;
+  width: $width;
+  height: ratio($width, 1/2);
+  @include center();
+}
+
+// 색상 내장 함수
+.box1{
+  $color : royalblue;
+  width: 200px;
+  height: 100px;
+  margin: 20px;
+  border-radius: 10px;
+  background-color: $color;
+  &:hover{
+    background-color: darken($color, 40%);
+  }
+  &.built-in{
+    background-color: lighten($color, 20%);
+    &:hover{
+      // background-color: saturate($color, 10%);
+      // background-color: desaturate($color, 10%);
+      // background-color: grayscale($color);
+      background-color: rgba($color, 0.1);
+    }
+  }
+}
